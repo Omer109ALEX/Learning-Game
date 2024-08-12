@@ -1,0 +1,99 @@
+/* HomePage.css */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensure no scrollbars appear */
+}
+
+.homepage-container {
+  text-align: center;
+  padding: 50px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  width: 500px;  /* Increased width for more space */
+  position: relative; /* Position relative to contain absolute elements */
+}
+
+.background-overlay {
+  padding: 20px;
+  position: relative;
+}
+
+.content {
+  z-index: 2; /* Ensure content is above the animations */
+  position: relative;
+}
+
+.homepage-title {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.learning-animation-left {
+  width: 300px;
+  position: absolute;
+  left: -380px;  /* Position outside to the left of the container */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.learning-animation-right {
+  width: 300px;  /* Adjusted width to fit the design */
+  position: absolute;
+  right: -380px;  /* Position outside to the right of the container */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.homepage-input {
+  width: 300px;
+  padding: 15px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  font-size: 1em;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.homepage-input:focus {
+  border-color: #6e8efb;
+  outline: none;
+  box-shadow: 0 5px 15px rgba(110, 142, 251, 0.3);
+}
+
+.homepage-button {
+  margin-left: 10px;
+  padding: 15px 30px;
+  border-radius: 25px;
+  border: none;
+  background: #6e8efb;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.homepage-button:hover {
+  background: #a777e3;
+  box-shadow: 0 5px 15px rgba(167, 119, 227, 0.3);
+}
+
+.homepage-button:focus {
+  outline: none;
+}
