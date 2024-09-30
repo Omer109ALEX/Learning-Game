@@ -1,0 +1,243 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;   
+  overflow: hidden; /* Prevent body from scrolling */
+}
+
+.summary-page-container {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  background: none;
+}
+
+.summary-page {
+  padding: 20px;
+  text-align: center;
+  color: #333; /* Dark text color for better contrast */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 10px; /* Rounded corners */
+  max-width: 90%;
+  margin: 20px auto; /* Add margin to ensure it's centered */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+}
+
+.summary-title {
+  font-size: 3em;
+  margin-bottom: 20px;
+  color: #4a90e2; /* Primary color for the title */
+}
+
+.summary-page h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #4a90e2; /* Primary color for the heading */
+}
+
+.summary-page p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.learn-new-subject-button {
+  margin-top: 20px;
+  padding: 12px 24px; /* Slightly smaller padding */
+  font-size: 16px; /* Smaller font size */
+  background-color: #4a90e2; /* Primary color for the button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.learn-new-subject-button:hover {
+  background-color: #357ab8; /* Darker shade for hover effect */
+}
+
+ul {
+  text-align: left;
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul li {
+  background-color: #fff;
+  padding: 10px; /* Reduced padding */
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for list items */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+ul li:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ul li::before {
+  content: "•";
+  color: #4a90e2; /* Primary color for bullet points */
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.explanation-toggle {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* Reduced padding */
+  font-size: 0.9em; /* Smaller font size */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.explanation-toggle:hover {
+  background-color: #357ab8;
+}
+
+.explanation-box {
+  background-color: #e0e7ff;
+  padding: 10px; /* Reduced padding */
+  font-size: 0.9em; /* Smaller font size */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  text-align: left;
+}
+
+.results {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.result-box {
+  padding: 10px;
+  border-radius: 10px;
+  width: 45%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-box p {
+  margin: 0 0 5px 0;
+  font-size: 0.9em; /* Smaller font size for the label */
+}
+
+.result-box span {
+  font-size: 1.4em; /* Smaller font size for the number */
+  font-weight: bold;
+}
+
+.result-box.correct {
+  background-color: #c6f6d5;
+  color: #2f855a;
+}
+
+.result-box.incorrect {
+  background-color: #fed7d7;
+  color: #c53030;
+}
+
+/* Media Queries for Responsive Design */
+@media (min-width: 600px) {
+  .summary-page {
+    padding: 25px;
+    max-width: 80%;
+  }
+
+  .summary-title {
+    font-size: 3em;
+  }
+
+  .summary-page h2 {
+    font-size: 2.5em;
+  }
+
+  .summary-page p {
+    font-size: 1.5em;
+  }
+
+  .learn-new-subject-button {
+    font-size: 18px;
+  }
+
+  .result-box p {
+    font-size: 1em;
+  }
+
+  .result-box span {
+    font-size: 1.6em;
+  }
+}
+
+@media (min-width: 900px) {
+  .summary-page {
+    padding: 30px;
+    max-width: 70%;
+  }
+
+  .summary-title {
+    font-size: 3.5em;
+  }
+
+  .summary-page h2 {
+    font-size: 3em;
+  }
+
+  .summary-page p {
+    font-size: 1.8em;
+  }
+
+  .results {
+    font-size: 0.8rem;
+    margin-bottom: 40px;
+  }
+  
+  .results p {
+    margin: 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .correct, .incorrect {
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 20px;
+    min-width: 60px;
+  }
+  
+  .correct {
+    background-color: #c6f6d5;
+    color: #2f855a;
+  }
+  
+  .incorrect {
+    background-color: #fed7d7;
+    color: #c53030;
+  }
+  
+  .learn-new-subject-button {
+    font-size: 20px;
+  }
+
+  .result-box p {
+    font-size: 1.1em;
+  }
+
+  .result-box span {
+    font-size: 1.8em;
+  }
+}
