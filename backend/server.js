@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+require('dotenv').config(); // Load environment variables
 
 const app = express();
 
@@ -16,30 +18,30 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Learning App!');
 });
 
-// API endpoint for generating content
 app.post('/generate', async (req, res) => {
   const { subject } = req.body;
 
-  // Use the Groq API to generate content (mockup API call)
-  // Replace this with actual API call and handling
-  const generatedParagraph = `This is a short paragraph about ${subject}. [Generated content goes here.]`;
+  try {
+    // Call the Flask API
+    const response = await axios.post('http://localhost:5001/generate', {
+      subject: subject
+    });
 
-  const question = `What is a key concept in ${subject}?`;
-  const answers = [
-    'Answer 1',
-    'Answer 2', // Correct answer
-    'Answer 3',
-    'Answer 4'
-  ];
+    // Use the response from Flask
+    const { paragraph, question, answers, correctAnswerIndex } = response.data;
 
-  // Mocking a selection of the correct answer (index 1 in this case)
-  res.json({
-    paragraph: generatedParagraph,
-    question,
-    answers,
-    correctAnswerIndex: 1
-  });
+    res.json({
+      paragraph,
+      question,
+      answers,
+      correctAnswerIndex
+    });
+  } catch (error) {
+    console.error('Error calling Flask API:', error);
+    res.status(500).json({ error: 'Failed to generate content' });
+  }
 });
+
 
 // All other GET requests should return the React app
 app.get('*', (req, res) => {

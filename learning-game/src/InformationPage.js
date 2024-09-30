@@ -1,54 +1,80 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './InformationPage.css';
 
-function InformationPage({ currentQuestion, handleNextQuestion }) {
+function InformationPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { subject } = state || {}; // Provide a default empty object if state is null
-  const [generatedContent, setGeneratedContent] = useState(null);
+  const { subject, content, currentIndex = 0 } = state || {};
 
-  useEffect(() => {
-    if (!subject) {
-      // If subject is missing, redirect to home page
-      navigate('/');
-      return;
-    }
+  console.log('InformationPage state:', state);
 
-    const fetchContent = async () => {
-      const response = await fetch('http://localhost:5000/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ subject }),
-      });
+  if (!subject || !content || !Array.isArray(content) || content.length === 0) {
+    console.error('Invalid state in InformationPage:', state);
+    navigate('/');
+    return null;
+  }
 
-      const data = await response.json();
-      setGeneratedContent(data);
-    };
+  if (currentIndex >= content.length) {
+    navigate('/summary');
+    return null;
+  }
 
-    fetchContent();
-  }, [subject, navigate]);
+  const currentContent = content[currentIndex];
 
   const goToQuestions = () => {
-    navigate('/questions', { state: { ...generatedContent } });
+    console.log('Navigating to questions with state:', { ...state, currentIndex });
+    navigate('/questions', { 
+      state: { 
+        ...state,
+        currentIndex  // Don't increment here, just pass the current index
+      } 
+    });
   };
 
+  const handleLearnNewSubject = () => {
+    navigate('/');  // This will take the user back to the homepage
+  };
+
+  // Debugging info (commented out)
+  /*
+  const debuggingInfo = (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      background: 'red',
+      color: 'white',
+      padding: '10px',
+      zIndex: 9999,
+      fontSize: '16px',
+      fontWeight: 'bold'
+    }}>
+      DEBUG: Information Page<br />
+      Current Index: {currentIndex}<br />
+      Sub-subject: {currentContent.subSubject}<br />
+      Total Content: {content.length}
+    </div>
+  );
+  */
+
   return (
-    <div style={{ padding: '50px', textAlign: 'center' }}>
-      {generatedContent ? (
-        <>
-          <p>{generatedContent.paragraph}</p>
-          <button onClick={goToQuestions} style={{ marginTop: '20px', padding: '10px 20px' }}>
-            Proceed to Questions
-          </button>
-          <div style={{ marginTop: '20px' }}>
-            <p>{currentQuestion} / 10</p>
-          </div>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="information-page">
+      {/* {debuggingInfo} */}
+      <div className="content-box">
+        <h2 className="subject-heading">{subject}</h2>
+        <h3 className="sub-subject-heading">{currentContent.subSubject}</h3>
+        <p className="content-paragraph">{currentContent.paragraph}</p>
+        <button onClick={goToQuestions} className="proceed-button">
+          Proceed to Question
+        </button>
+        <div className="question-counter">
+          <p>Sub-subject {currentIndex + 1} of {content.length}</p>
+        </div>
+      </div>
+      <button onClick={handleLearnNewSubject} className="learn-new-subject-button">
+        Learn New Subject
+      </button>
     </div>
   );
 }

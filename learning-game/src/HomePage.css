@@ -19,11 +19,13 @@ body {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   width: 500px;  /* Increased width for more space */
   position: relative; /* Position relative to contain absolute elements */
+  padding-bottom: 220px;  /* Add space for the loading animation */
 }
 
 .background-overlay {
   padding: 20px;
   position: relative;
+  overflow: visible;  /* Allow the loading animation to overflow */
 }
 
 .content {
@@ -96,4 +98,15 @@ body {
 
 .homepage-button:focus {
   outline: none;
+}
+
+.loading-container {
+  position: absolute;
+  top: 100%;  /* Position it below the form */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;  /* Increased size */
+  height: 300px;  /* Increased size */
+  margin-top: 20px;
+  z-index: 10;  /* Ensure it's above other elements */
 }

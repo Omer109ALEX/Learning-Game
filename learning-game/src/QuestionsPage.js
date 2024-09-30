@@ -1,49 +1,135 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Lottie from 'lottie-react';
+import jumpingStars from './assets/jumping-stars.json'; // Path to your stars animation JSON
+import errorAnimation from './assets/error.json'; // Path to your error animation JSON
+import './QuestionsPage.css';
 
-function QuestionsPage({ currentQuestion, handleNextQuestion }) {
+function QuestionsPage() {
   const { state } = useLocation();
-  const { question, answers, correctAnswerIndex } = state;
   const navigate = useNavigate();
+  const [userAnswers, setUserAnswers] = useState(state?.userAnswers || []);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const currentIndex = state?.currentIndex || 0;
 
-  const handleAnswer = (index) => {
-    const isCorrect = index === correctAnswerIndex;
-    const explanation = isCorrect ? '' : `The correct answer was ${answers[correctAnswerIndex]}.`;
+  useEffect(() => {
+    if (!state || !state.content || currentIndex >= state.content.length) {
+      navigate('/summary', { state: { userAnswers } });
+    }
+  }, [state, currentIndex, navigate, userAnswers]);
 
-    handleNextQuestion(isCorrect, explanation);
+  if (!state || !state.content || currentIndex >= state.content.length) {
+    return null;
+  }
 
-    if (currentQuestion < 10) {
-      navigate('/information', { state: { subject: 'Your Subject Here' } });
+  const { subject, content } = state;
+  const currentContent = content[currentIndex];
+  const { question, answers, correctAnswerIndex } = currentContent;
+
+  const handleAnswer = (answerIndex) => {
+    const isCorrect = answerIndex === correctAnswerIndex;
+    setSelectedAnswer(answerIndex);
+    setShowFeedback(true);
+
+    if (isCorrect) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 2000);
+    }
+
+    const newUserAnswers = [
+      ...userAnswers,
+      {
+        questionIndex: currentIndex,
+        userAnswer: answerIndex,
+        isCorrect,
+        explanation: isCorrect
+          ? ''
+          : `The correct answer was: ${answers[correctAnswerIndex]}. ${currentContent.explanation || ''}`
+      }
+    ];
+    setUserAnswers(newUserAnswers);
+  };
+
+  const handleNextQuestion = () => {
+    setShowFeedback(false);
+    setSelectedAnswer(null);
+
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < content.length) {
+      navigate('/information', {
+        state: {
+          subject,
+          content,
+          currentIndex: nextIndex,
+          userAnswers
+        }
+      });
     } else {
-      navigate('/summary');
+      navigate('/summary', { state: { userAnswers } });
     }
   };
 
+  const handleLearnNewSubject = () => {
+    navigate('/');  // This will take the user back to the homepage
+  };
+
   return (
-    <div style={{ padding: '50px', textAlign: 'center' }}>
-      <h2>{question}</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '600px', margin: 'auto' }}>
-        {answers.map((answer, index) => (
-          <div
-            key={index}
-            onClick={() => handleAnswer(index)}
-            style={{
-              border: '2px solid #ccc',
-              padding: '20px',
-              fontSize: '18px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '100px'
-            }}>
-            {answer}
+    <div className="questions-page">
+      <div className="question-container">
+        <h3 className="sub-subject-heading">{currentContent.subSubject}</h3>
+        <h2 className="question-text">{question}</h2>
+        <div className="answers-grid">
+          {answers.map((answer, index) => (
+            <button
+              key={index}
+              onClick={() => !showFeedback && handleAnswer(index)}
+              className={`answer-option ${
+                showFeedback
+                  ? index === correctAnswerIndex
+                    ? 'correct'
+                    : index === selectedAnswer
+                    ? 'incorrect'
+                    : ''
+                  : ''
+              }`}
+              disabled={showFeedback}
+            >
+              {answer}
+            </button>
+          ))}
+        </div>
+        {showFeedback && (
+          <div className={`feedback ${selectedAnswer === correctAnswerIndex ? 'correct' : 'incorrect'}`}>
+            <h3>{selectedAnswer === correctAnswerIndex ? 'Correct!' : 'Incorrect'}</h3>
+            <p>{currentContent.explanation || ''}</p>
+            <button className="next-button" onClick={handleNextQuestion}>
+              Next Question
+            </button>
           </div>
-        ))}
+        )}
+        <div className="question-counter">
+          <p>Question {currentIndex + 1} of {content.length}</p>
+        </div>
       </div>
-      <div style={{ marginTop: '20px' }}>
-        <p>{currentQuestion} / 10</p>
-      </div>
+
+      {/* Lottie Animations */}
+      {showCelebration && (
+        <div className="celebration">
+          <Lottie animationData={jumpingStars} className="lottie-animation" />
+        </div>
+      )}
+
+      {showFeedback && selectedAnswer !== correctAnswerIndex && (
+        <div className="error-animation">
+          <Lottie animationData={errorAnimation} className="lottie-animation" />
+        </div>
+      )}
+
+      <button onClick={handleLearnNewSubject} className="learn-new-subject-button">
+        Learn New Subject
+      </button>
     </div>
   );
 }
