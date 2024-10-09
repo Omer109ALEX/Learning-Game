@@ -2,10 +2,17 @@ from flask import Flask, request, jsonify
 import use_llm
 from flask_cors import CORS
 import json
+import os
 
 # Initialize Flask application
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+PORT = os.environ.get('PORT', '5000')  # Defaults to '5000' if 'PORT' is not set
+
+@app.route('/')
+def index():
+    return f'Server is running on port {PORT}'
 
 
 @app.route('/initialize_subject', methods=['POST', 'OPTIONS'])
@@ -82,6 +89,9 @@ def validate_content(data):
             'status': 'error',
             'message': str(e)
         }
+
+"""    
 # Run the Flask application
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
+"""
