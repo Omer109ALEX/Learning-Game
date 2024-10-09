@@ -21,7 +21,7 @@ function HomePage() {
 
     try {
       //const response = await fetch('http://localhost:5001/initialize_subject', {
-      const response = await fetch('https://learning-game-backend.onrender.com:5001/initialize_subject', {
+      const response = await fetch('https://learning-game-backend.onrender.com/initialize_subject', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
