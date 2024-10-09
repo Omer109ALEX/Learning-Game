@@ -11,7 +11,7 @@ app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../learning-game/build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // Route to handle GET requests to the root URL
 app.get('/', (req, res) => {
@@ -45,7 +45,7 @@ app.post('/generate', async (req, res) => {
 
 // All other GET requests should return the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../learning-game/build/index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
