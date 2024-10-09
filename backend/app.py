@@ -82,7 +82,8 @@ def validate_content(data):
             'status': 'error',
             'message': str(e)
         }
-
+"""
 # Run the Flask application
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
+"""

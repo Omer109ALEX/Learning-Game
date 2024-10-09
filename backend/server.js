@@ -3,11 +3,11 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 
 const app = express();
 
-app.use(cors()); // Enable CORS
+app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the React app
@@ -22,8 +22,8 @@ app.post('/generate', async (req, res) => {
   const { subject } = req.body;
 
   try {
-    // Call the Flask API
-    const response = await axios.post('http://localhost:5001/generate', {
+    // Proxy the request to the Flask API running on port 5001 internally
+    const response = await axios.post('http://localhost:5001/initialize_subject', {
       subject: subject
     });
 
@@ -42,13 +42,12 @@ app.post('/generate', async (req, res) => {
   }
 });
 
-
-// All other GET requests should return the React app
+// All other GET requests should return the React app's index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // Use the Render-provided port or default to 5000
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
