@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "concurrently \"gunicorn app:app --bind 0.0.0.0:5001\" \"node server.js\"",
+      "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
