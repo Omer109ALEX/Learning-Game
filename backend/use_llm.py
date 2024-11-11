@@ -68,7 +68,7 @@ def create_sub_subjects(subject: str, num: int = 10) -> List[str]:
 
 
 
-def generate_content(subject, main_subject):
+def generate_content(subject, main_subject, level=1):
     # Formulate the prompt for the LLM
     prompt = f"""
     Please provide the following for the subject: '{subject}' in context of the main subject: '{main_subject}':
@@ -81,7 +81,7 @@ def generate_content(subject, main_subject):
     
     4. Correct Answer Index: The index (0-3) of the correct answer in the list of answers.
     
-    Please keep the original language of the subject in your response
+    The difficulty of the questions should be at level {level}, where 1 represents the easiest level and 10 represents the most difficult level."
     """
     response_format = '{"explanation": "..." , "question": "...", "answers" : ["ans1","ans2","ans3","ans4"],"correct_answer_index": 0-3}'
 
